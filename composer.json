@@ -1,0 +1,19 @@
+{
+    "name": "flowpack/cors",
+    "type": "neos-package",
+    "description": "CORS HTTP component (middleware) for Neos Flow",
+    "license": "LGPL-3.0+",
+    "require": {
+        "neos/flow": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flowpack\\Cors\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Flowpack\\Cors\\Tests\\": "Tests"
+        }
+    }
+}

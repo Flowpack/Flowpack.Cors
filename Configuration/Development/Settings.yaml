@@ -1,0 +1,4 @@
+Flowpack:
+  Cors:
+
+    enabled: true
