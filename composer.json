@@ -4,7 +4,7 @@
     "description": "CORS HTTP component (middleware) for Neos Flow",
     "license": "LGPL-3.0+",
     "require": {
-        "neos/flow": "*"
+        "neos/flow": "^4.0 || ^5.0 || ^6.0"
     },
     "autoload": {
         "psr-4": {
