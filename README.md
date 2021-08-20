@@ -2,6 +2,17 @@
 
 Fully featured CORS HTTP component (a.k.a. middleware) for Flow framework to allow "cross-domain" requests.
 
+
+```
+⚡️ Warning
+
+This package is not working with version 7.0 and higher of the Neos/Flow framework.
+In version 7.0 we introduced PSR-15 Middlewares and it is possible to use other PHP libraries instead.
+
+For instance https://github.com/tuupola/cors-middleware
+```
+
+
 ## Background
 
 This package is a implementation of a CORS middleware for Cross-Origin Resource Sharing (see https://developer.mozilla.org/en-US/docs/Glossary/CORS).
