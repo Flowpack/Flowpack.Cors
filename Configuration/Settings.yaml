@@ -36,23 +36,14 @@ Flowpack:
     #
     maxAge: 0
 
-    # Instructs preflight to let other potential next components to process the OPTIONS method. Turn this on if your application handles OPTIONS.
-    #
-    optionsPassthrough: false
-
-    # Debugging flag adds additional logging to System.log to debug server-side CORS issues.
-    #
-    debug: false
-
 Neos:
+  Neos:
+    fusion:
+      autoInclude:
+        Flowpack.Cors: true
   Flow:
-
     http:
-      chain:
-
-        'preprocess':
-          chain:
-
-            'flowpackCors':
-              position: 'end'
-              component: 'Flowpack\Cors\Http\Component\CorsComponent'
+      middlewares:
+        'cors':
+          position: 'after routing'
+          middleware: 'Flowpack\Cors\Http\CorsHeaderMiddleware'
