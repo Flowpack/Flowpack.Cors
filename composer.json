@@ -4,7 +4,9 @@
     "description": "CORS HTTP component (middleware) for Neos Flow",
     "license": "LGPL-3.0+",
     "require": {
-        "neos/flow": "^4.0 || ^5.0 || ^6.0"
+        "php": "^8.1",
+        "neos/flow": "^8.3",
+        "lmc/http-constants": "^1.2"
     },
     "autoload": {
         "psr-4": {
@@ -15,5 +17,18 @@
         "psr-4": {
             "Flowpack\\Cors\\Tests\\": "Tests"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "neos/composer-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.4",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan-phpunit": "^1.4",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-strict-rules": "^1.6"
     }
 }

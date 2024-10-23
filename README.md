@@ -1,24 +1,28 @@
 # Flowpack.Cors
 
+<!-- TOC -->
+* [Flowpack.Cors](#flowpackcors)
+  * [Introduction](#introduction)
+  * [Background](#background)
+  * [Installation](#installation)
+  * [Configuration](#configuration)
+    * [Enable CORS in Production:](#enable-cors-in-production)
+    * [Add additional allowed headers (e.g. `Authorization`):](#add-additional-allowed-headers-eg-authorization)
+    * [Configuration reference](#configuration-reference)
+<!-- TOC -->
+
+## Introduction
+
 Fully featured CORS HTTP component (a.k.a. middleware) for Flow framework to allow "cross-domain" requests.
-
-
-```
-⚡️ Warning
-
-This package is not working with version 7.0 and higher of the Neos/Flow framework.
-In version 7.0 we introduced PSR-15 Middlewares and it is possible to use other PHP libraries instead.
-
-For instance https://github.com/tuupola/cors-middleware
-```
-
 
 ## Background
 
-This package is a implementation of a CORS middleware for Cross-Origin Resource Sharing (see https://developer.mozilla.org/en-US/docs/Glossary/CORS).
+This package is a implementation of a CORS middleware for Cross-Origin Resource Sharing (
+see https://developer.mozilla.org/en-US/docs/Glossary/CORS).
 This enables the client (browser) of a webapp to perform "cross-domain" requests.
 
-The work is partially based on the awesome [github.com/rs/cors](https://github.com/rs/cors) HTTP middleware for the Go programming language.
+The work is partially based on the awesome [github.com/rs/cors](https://github.com/rs/cors) HTTP middleware for the Go
+programming language.
 
 ## Installation
 
@@ -28,12 +32,13 @@ composer require flowpack/cors
 
 (Refer to the [composer documentation](https://getcomposer.org/doc/) for more details)
 
-
-The default settings enables CORS for all origins (`*`) in the Flow Development context. This is usually not what you want in a production environment.
+The default settings enables CORS for all origins (`*`) in the Flow Development context. This is usually not what you
+want in a production environment.
 
 ## Configuration
 
-In your package or global `Settings.yaml` (see [Flow framework Configuration](http://flowframework.readthedocs.io/en/stable/TheDefinitiveGuide/PartIII/Configuration.html)).
+In your package or global `Settings.yaml` (
+see [Flow framework Configuration](http://flowframework.readthedocs.io/en/stable/TheDefinitiveGuide/PartIII/Configuration.html)).
 
 ### Enable CORS in Production:
 
@@ -47,7 +52,7 @@ Flowpack:
       - 'trusted-domain.tld'
 ```
 
-### Add additional allowed headers (e.g. `Authorization`): 
+### Add additional allowed headers (e.g. `Authorization`):
 
 ```
 Flowpack:
@@ -62,8 +67,8 @@ Flowpack:
       - 'Authorization'
 ```
 
-Note: Make sure to set _all_ array values including the defaults (if you want to keep them) in the configuration because the Flow configuration is merged with numeric keys which can lead to unwanted effects.
-
+Note: Make sure to set _all_ array values including the defaults (if you want to keep them) in the configuration because
+the Flow configuration is merged with numeric keys which can lead to unwanted effects.
 
 ### Configuration reference
 
@@ -105,12 +110,4 @@ Flowpack:
     # Indicates how long (in seconds) the results of a preflight request can be cached. The default is 0 which stands for no max age.
     #
     maxAge: 0
-
-    # Instructs preflight to let other potential next components to process the OPTIONS method. Turn this on if your application handles OPTIONS.
-    #
-    optionsPassthrough: false
-
-    # Debugging flag adds additional logging to System.log to debug server-side CORS issues.
-    #
-    debug: false
 ```
