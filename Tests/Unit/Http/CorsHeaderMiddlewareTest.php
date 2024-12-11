@@ -10,6 +10,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -24,6 +25,7 @@ class CorsHeaderMiddlewareTest extends TestCase
     private readonly ResponseInterface&MockObject $responseMock;
     private readonly RequestHandlerInterface&MockObject $handlerMock;
     private readonly LoggerInterface&MockObject $logger;
+    private readonly ResponseFactoryInterface&MockObject $responseFactoryMock;
 
     /**
      * @throws Exception
@@ -35,12 +37,12 @@ class CorsHeaderMiddlewareTest extends TestCase
         $this->requestMock = $this->createMock(ServerRequestInterface::class);
         $this->responseMock = $this->createMock(ResponseInterface::class);
         $this->handlerMock = $this->createMock(RequestHandlerInterface::class);
+        $this->responseFactoryMock = $this->createMock(ResponseFactoryInterface::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
         ObjectAccess::setProperty($this->middleware, 'enabled', true, true);
         ObjectAccess::setProperty($this->middleware, 'logger', $this->logger, true);
-
-        $this->handlerMock->expects($this->once())->method('handle')->willReturn($this->responseMock);
+        ObjectAccess::setProperty($this->middleware, 'responseFactory', $this->responseFactoryMock, true);
     }
 
     public function testMiddlewareIsNotEnabled(): void
@@ -65,6 +67,9 @@ class CorsHeaderMiddlewareTest extends TestCase
             };
         });
 
+        // the process is not passed down the chain and a fresh response is created
+        $this->handlerMock->expects($this->never())->method('handle');
+        $this->responseFactoryMock->expects($this->once())->method('createResponse')->willReturn($this->responseMock);
         $this->responseMock->expects($this->exactly(5))->method('withHeader')->willReturnSelf();
 
         $this->middleware->process($this->requestMock, $this->handlerMock);
@@ -83,9 +88,12 @@ class CorsHeaderMiddlewareTest extends TestCase
             };
         });
 
+        // the process is not passed down the chain and a fresh response is created
+        $this->handlerMock->expects($this->never())->method('handle');
+        $this->responseFactoryMock->expects($this->once())->method('createResponse')->willReturn($this->responseMock);
         $this->responseMock->expects($this->exactly(4))->method('withHeader')->willReturnSelf();
 
-         $this->middleware->process($this->requestMock, $this->handlerMock);
+        $this->middleware->process($this->requestMock, $this->handlerMock);
     }
 
     public function testMiddlewareActualRequestWithConfig(): void
@@ -100,6 +108,8 @@ class CorsHeaderMiddlewareTest extends TestCase
             };
         });
 
+        // request is passed down the chain
+        $this->handlerMock->expects($this->once())->method('handle')->willReturn($this->responseMock);
         $this->responseMock->expects($this->exactly(4))->method('withHeader')->willReturnSelf();
 
         $this->middleware->process($this->requestMock, $this->handlerMock);
@@ -117,6 +127,8 @@ class CorsHeaderMiddlewareTest extends TestCase
             };
         });
 
+        // request is passed down the chain
+        $this->handlerMock->expects($this->once())->method('handle')->willReturn($this->responseMock);
         $this->responseMock->expects($this->exactly(4))->method('withHeader')->willReturnSelf();
 
         $this->middleware->process($this->requestMock, $this->handlerMock);
@@ -142,6 +154,8 @@ class CorsHeaderMiddlewareTest extends TestCase
             };
         });
 
+        // request is passed down the chain
+        $this->handlerMock->expects($this->once())->method('handle')->willReturn($this->responseMock);
         $this->responseMock->expects($this->exactly(4))->method('withHeader')->willReturnSelf();
 
         $this->middleware->process($this->requestMock, $this->handlerMock);
@@ -167,6 +181,8 @@ class CorsHeaderMiddlewareTest extends TestCase
             };
         });
 
+        // request is passed down the chain
+        $this->handlerMock->expects($this->once())->method('handle')->willReturn($this->responseMock);
         $this->responseMock->expects($this->never())->method('withHeader')->willReturnSelf();
 
         $this->logger->expects($this->exactly(2))->method('debug');

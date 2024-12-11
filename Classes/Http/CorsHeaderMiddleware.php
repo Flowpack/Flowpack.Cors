@@ -6,6 +6,7 @@ namespace Flowpack\Cors\Http;
 
 use Lmc\HttpConstants\Header;
 use Neos\Flow\Annotations as Flow;
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -14,6 +15,12 @@ use Psr\Log\LoggerInterface;
 
 class CorsHeaderMiddleware implements MiddlewareInterface
 {
+    /**
+     * @Flow\Inject
+     * @var ResponseFactoryInterface
+     */
+    protected $responseFactory;
+
     /**
      * @Flow\InjectConfiguration("enabled")
      */
@@ -73,15 +80,16 @@ class CorsHeaderMiddleware implements MiddlewareInterface
         }
 
         $this->initializeConfiguration();
-
-        $response = $handler->handle($request);
         $method = $request->getMethod();
 
-        // method type is not options, return early
-        if ($method == 'OPTIONS') {
+        // method type is OPTIONS, return early
+        if ($method === 'OPTIONS') {
             $this->logger->debug('CORS Component: Preflight request');
+            $response = $this->responseFactory->createResponse();
             return $this->handlePreflight($request, $response);
         }
+
+        $response = $handler->handle($request);
         return $this->handleRequest($request, $response);
     }
 
