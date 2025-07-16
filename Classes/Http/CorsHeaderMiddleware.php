@@ -319,6 +319,8 @@ class CorsHeaderMiddleware implements MiddlewareInterface
         if ($this->allowedHeadersAll || $this->allowedHeaders === []) {
             return true;
         }
+        // each header may comma seperated itself
+        $headers = array_merge(...array_map(fn(string $line) => explode(',' , $line), $headers));
         foreach ($headers as $header) {
             if (!in_array($header, $this->allowedHeaders, true)) {
                 return false;
